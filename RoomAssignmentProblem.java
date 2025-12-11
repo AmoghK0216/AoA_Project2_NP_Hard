@@ -1,7 +1,6 @@
 import java.util.*;
 import java.io.*;
 
-// Course class representing a university course
 class Course {
     private int id;
     private String name;
@@ -37,7 +36,6 @@ class Course {
     }
 }
 
-// TimeSlot class representing when a course meets
 class TimeSlot {
     private String day; // MON, TUE, WED, THU, FRI
     private int startTime; // minutes from midnight (e.g., 540 = 9:00 AM)
@@ -68,7 +66,6 @@ class TimeSlot {
     }
 }
 
-// Room class representing a classroom
 class Room {
     private int id;
     private String name;
@@ -111,7 +108,6 @@ class Room {
     }
 }
 
-// Assignment result
 class Assignment {
     private Map<Course, Room> courseToRoom;
     private int totalRoomsUsed;
@@ -152,22 +148,18 @@ class Assignment {
     }
 }
 
-// Main Greedy Algorithm
 class RoomAssignmentSolver {
 
     public Assignment solve(List<Course> courses, List<Room> rooms) {
         Assignment assignment = new Assignment();
 
-        // Reset all rooms
         for (Room room : rooms) {
             room.reset();
         }
 
-        // Step 1: Sort courses by enrollment size (descending)
         List<Course> sortedCourses = new ArrayList<>(courses);
         sortedCourses.sort((c1, c2) -> Integer.compare(c2.getEnrollment(), c1.getEnrollment()));
 
-        // Step 2: Greedy assignment
         for (Course course : sortedCourses) {
             Room assignedRoom = assignCourseToRoom(course, rooms);
 
@@ -207,7 +199,6 @@ class RoomAssignmentSolver {
     }
 }
 
-// Experimental validation
 class ExperimentRunner {
     private Random random;
 
@@ -234,25 +225,21 @@ class ExperimentRunner {
         };
 
         for (int i = 0; i < numCourses; i++) {
-            // More reasonable enrollment distribution
+
             int enrollment = 15 + random.nextInt(136); // 15-150 students
 
-            // Generate 2-3 meeting times per week (MWF or TR pattern)
             List<TimeSlot> schedule = new ArrayList<>();
 
-            // Choose a pattern
             boolean mwfPattern = random.nextBoolean();
             int timeSlotIndex = random.nextInt(timeSlots.length);
             int startTime = timeSlots[timeSlotIndex][0];
             int endTime = timeSlots[timeSlotIndex][1];
 
             if (mwfPattern) {
-                // Monday, Wednesday, Friday
                 schedule.add(new TimeSlot("MON", startTime, endTime));
                 schedule.add(new TimeSlot("WED", startTime, endTime));
                 schedule.add(new TimeSlot("FRI", startTime, endTime));
             } else {
-                // Tuesday, Thursday
                 schedule.add(new TimeSlot("TUE", startTime, endTime));
                 schedule.add(new TimeSlot("THU", startTime, endTime));
             }
@@ -266,7 +253,6 @@ class ExperimentRunner {
     public List<Room> generateRooms(int numRooms) {
         List<Room> rooms = new ArrayList<>();
 
-        // Better distribution: more variety in room sizes
         // Ensure we have enough large rooms
         int smallRooms = (int)(numRooms * 0.3);     // 30% small (20-40)
         int mediumRooms = (int)(numRooms * 0.4);    // 40% medium (50-80)
@@ -296,7 +282,7 @@ class ExperimentRunner {
     }
 
     public void runExperiment(int[] courseCounts) {
-        System.out.println("Running experiments...");
+        System.out.println("Running experiments:");
         System.out.println("Courses\tRooms\tTime(ms)\tRoomsUsed\tSuccess");
         System.out.println("-------\t-----\t--------\t---------\t-------");
 
@@ -369,7 +355,6 @@ class ExperimentRunner {
     }
 }
 
-// Main class with demonstration
 public class RoomAssignmentProblem {
 
     public static void main(String[] args) {
